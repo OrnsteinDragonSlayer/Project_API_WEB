@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Погода сегодня</h1>
+<div class="col-md6 border rounded">
+    <h2>{{ positions_one_day["city"] }}, {{ positions_one_day["country"] }}</h2>
+    <div>
+        Погода: {{ positions_one_day["weather"] }}
+    </div>
+    <div>
+        Средняя температура: {{ positions_one_day["temp"] }} C
+    </div>
+    <div>
+    	Минимальная температура: {{ positions_one_day["min_temp"] }} C
+    </div>
+    <div>
+    	Максимальная температура: {{ positions_one_day["max_temp"] }} C
+    </div>
+    <div>
+    	Ощущается как: {{ positions_one_day["feels_like"] }} C
+    </div>
+    <div>
+    	Давление: {{ positions_one_day["pressure"] / 10 }} кПа
+    </div>
+    <div>
+    	Видимость: {{ positions_one_day["visibility"] / 1000 }} км
+    </div>
+</div>
+<h1>Прогноз на неделю</h1>
+<div class="col-md6 border rounded">
+    <div>
+        {% set months = {"01": "Январь", "02": "Февраль", "03": "Март", "04": "Апрель",
+                         "05": "Май", "06": "Июнь", "07": "Июль", "08": "Август",
+                         "09": "Сентябрь", "10": "Октябрь", "11": "Ноябрь", "12": "Декабрь"} %}
+        {% for positions in positions_days %}
+            {% set a = positions["times"].split()[0].split("-")[::-1] %}
+            <div>
+                Дата: {{ a[0] }} {{ months[a[1]] }} {{ a[2] }} года
+            </div>
+            <div>
+                Время: {{ positions["times"].split()[-1] }}
+            </div>
+            <div>
+                Погода: {{ positions["weather"] }}
+            </div>
+            <div>
+                Температура: {{ positions["temps"] }} C
+            </div>
+            <div>
+                Скорость ветра: {{ positions["wind_speed"] }} м/c
+            </div>
+            <div>
+                Направление ветра: {{ positions["wind_direction"] }}
+            </div>
+            <div>
+                ------------------------------
+            </div>
+        {% endfor %}
+    </div>
+</div>
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+</form>
+{% endblock %}
